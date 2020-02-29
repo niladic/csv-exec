@@ -1,0 +1,12 @@
+[package]
+name = "csv-exec"
+version = "0.1.0"
+authors = ["niladic <git@nil.choron.cc>"]
+edition = "2018"
+
+[dependencies]
+anyhow = "1.0"
+clap = "2.33"
+csv = "1.1"
+regex = "1.3"
+shell-words = "0.1"
