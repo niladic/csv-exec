@@ -2,6 +2,14 @@
 name = "csv-exec"
 version = "0.1.0"
 authors = ["niladic <git@nil.choron.cc>"]
+license = "MIT"
+description = "Executes a command for each line of a CSV file, using the columns values."
+homepage = "https://github.com/niladic/csv-exec"
+documentation = "https://github.com/niladic/csv-exec"
+repository = "https://github.com/niladic/csv-exec"
+readme = "README.md"
+keywords = ["csv", "tsv", "command", "shell", "scripts"]
+categories = ["command-line-utilities", "text-processing"]
 edition = "2018"
 
 [dependencies]
