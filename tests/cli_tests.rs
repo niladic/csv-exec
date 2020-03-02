@@ -18,7 +18,7 @@ Id,Dir,Result
 
     Command::cargo_bin("csv-exec")
         .unwrap()
-        .args(&["echo $1/$0"])
+        .args(&["echo $2/$1"])
         .write_stdin(input)
         .assert()
         .stdout(expected_output);
@@ -42,7 +42,7 @@ Id,Dir,Result
 
     Command::cargo_bin("csv-exec")
         .unwrap()
-        .args(&["echo €1/€0", "--arg-regex", "€([0-9]+)"])
+        .args(&["echo €2/€1", "--arg-regex", "€([0-9]+)"])
         .write_stdin(input)
         .assert()
         .stdout(expected_output);
@@ -66,7 +66,7 @@ Id;Dir;Result
 
     Command::cargo_bin("csv-exec")
         .unwrap()
-        .args(&["echo $1/$0", "-d", ";"])
+        .args(&["echo $2/$1", "-d", ";"])
         .write_stdin(input)
         .assert()
         .stdout(expected_output);
@@ -90,14 +90,14 @@ Id\tDir\tResult
 
     Command::cargo_bin("csv-exec")
         .unwrap()
-        .args(&["echo $1/$0", "-d", "\\t"])
+        .args(&["echo $2/$1", "-d", "\\t"])
         .write_stdin(input)
         .assert()
         .stdout(expected_output);
 
     Command::cargo_bin("csv-exec")
         .unwrap()
-        .args(&["echo $1/$0", "-d", "\t"])
+        .args(&["echo $2/$1", "-d", "\t"])
         .write_stdin(input)
         .assert()
         .stdout(expected_output);
@@ -119,7 +119,7 @@ fn test_no_headers() {
 
     Command::cargo_bin("csv-exec")
         .unwrap()
-        .args(&["echo $1/$0", "--no-headers"])
+        .args(&["echo $2/$1", "--no-headers"])
         .write_stdin(input)
         .assert()
         .stdout(expected_output);
@@ -143,7 +143,7 @@ Id,Dir,A Result
 
     Command::cargo_bin("csv-exec")
         .unwrap()
-        .args(&["echo $1/$0", "--new-column-name", "A Result"])
+        .args(&["echo $2/$1", "--new-column-name", "A Result"])
         .write_stdin(input)
         .assert()
         .stdout(expected_output);

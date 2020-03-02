@@ -74,7 +74,15 @@ fn main() -> Result<()> {
                 .long("arg-regex")
                 .value_name("REGEX")
                 .default_value(r"\$([0-9]+)")
-                .help("Regex used to parse the column position in the command args. Syntax: https://docs.rs/regex/1.3.4/regex/index.html#syntax")
+                .help(
+                    "
+Regex used to parse the column position in the command args.
+Position begins at 1.
+Only the first capturing group is used.
+Syntax: https://docs.rs/regex/1.3.4/regex/index.html#syntax
+"
+                    .trim_start(),
+                )
                 .takes_value(true),
         )
         .arg(
@@ -192,6 +200,8 @@ fn run(config: Config) -> Result<()> {
                         let record_value = caps
                             .get(1)
                             .and_then(|position| position.as_str().parse::<usize>().ok())
+                            // Column position begins at 1
+                            .and_then(|position| position.checked_sub(1))
                             .and_then(|position| record.get(position));
                         match record_value {
                             None => "",

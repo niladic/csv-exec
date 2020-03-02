@@ -6,7 +6,7 @@ Id,Dir
 24,example.com/a
 68,example.com/b
 
-$ csv-exec 'echo $1/$0' <test.csv
+$ csv-exec 'echo $2/$1' <test.csv
 Id,Dir,Result
 24,example.com/a,example.com/a/24
 68,example.com/b,example.com/b/68
@@ -15,7 +15,7 @@ Id,Dir,Result
 The regex that parses the arguments can be changed:
 
 ```sh
-$ csv-exec 'echo €1/€0' --arg-regex '€([0-9]+)' <test.csv
+$ csv-exec 'echo €2/€1' --arg-regex '€([0-9]+)' <test.csv
 Id,Dir,Result
 24,example.com/a,example.com/a/24
 68,example.com/b,example.com/b/68
@@ -33,13 +33,16 @@ USAGE:
     csv-exec [FLAGS] [OPTIONS] <COMMAND>
 
 FLAGS:
-    -h, --help         Prints help information
-    -n, --no-header    Do not read the first line as a header line
-    -V, --version      Prints version information
+    -h, --help          Prints help information
+    -n, --no-headers    Do not read the first line as a header line
+    -V, --version       Prints version information
 
 OPTIONS:
-        --arg-regex <REGEX>           Regex used to parse the column position in the command args. Syntax:
-                                      https://docs.rs/regex/1.3.4/regex/index.html#syntax [default: \$([0-9]+)]
+        --arg-regex <REGEX>           Regex used to parse the column position in the command args.
+                                      Position begins at 1.
+                                      Only the first capturing group is used.
+                                      Syntax: https://docs.rs/regex/1.3.4/regex/index.html#syntax
+                                       [default: \$([0-9]+)]
     -d, --delimiter <CHAR>            CSV delimiter (\t for tabs) [default: ,]
     -i, --input <FILE>                Input CSV file [stdin by default]
         --new-column-name <STRING>    Name of the new column which contains the results [default: Result]
