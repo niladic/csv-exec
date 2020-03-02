@@ -1,6 +1,6 @@
 [package]
 name = "csv-exec"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["niladic <git@nil.choron.cc>"]
 license = "MIT"
 description = "Executes a command for each line of a CSV file, using the columns values."
