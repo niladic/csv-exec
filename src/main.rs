@@ -46,9 +46,9 @@ fn main() -> Result<()> {
                 .takes_value(true),
         )
         .arg(
-            Arg::with_name("no-header")
+            Arg::with_name("no-headers")
                 .short("n")
-                .long("no-header")
+                .long("no-headers")
                 .help("Do not read the first line as a header line")
                 .takes_value(false),
         )
