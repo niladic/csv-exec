@@ -11,6 +11,7 @@ struct Config {
     pub exec: String,
     pub no_headers: bool,
     pub delimiter: String,
+    pub out_delimiter: Option<String>,
     pub quote: String,
     pub arg_regex: String,
     pub new_column_name: String,
@@ -62,6 +63,13 @@ fn main() -> Result<()> {
                 .takes_value(true),
         )
         .arg(
+            Arg::with_name("out-delimiter")
+                .long("out-delimiter")
+                .value_name("CHAR")
+                .help("Output CSV delimiter, if different from delimiter (\\t for tabs)")
+                .takes_value(true),
+        )
+        .arg(
             Arg::with_name("quote")
                 .long("quote")
                 .value_name("CHAR")
@@ -108,6 +116,7 @@ Syntax: https://docs.rs/regex/1.3.4/regex/index.html#syntax
             .value_of("delimiter")
             .map(String::from)
             .unwrap_or_else(String::new),
+        out_delimiter: matches.value_of("out-delimiter").map(String::from),
         quote: matches
             .value_of("quote")
             .map(String::from)
@@ -154,11 +163,21 @@ fn run(config: Config) -> Result<()> {
         }
     };
 
-    let delimiter: u8 = if &config.delimiter == r"\t" {
-        b'\t'
-    } else {
-        read_one_ascii_char(&config.delimiter)?
+    let read_delimiter = |value: &str| -> Result<u8> {
+        if value == r"\t" {
+            Ok(b'\t')
+        } else {
+            read_one_ascii_char(value)
+        }
     };
+
+    let delimiter: u8 = read_delimiter(&config.delimiter)?;
+
+    let out_delimiter: u8 = config
+        .out_delimiter
+        .map(|d| read_delimiter(&d))
+        .transpose()?
+        .unwrap_or(delimiter);
 
     let quote: u8 = read_one_ascii_char(&config.quote)?;
 
@@ -173,7 +192,7 @@ fn run(config: Config) -> Result<()> {
         .from_reader(reader);
 
     let mut csv_writer = csv::WriterBuilder::new()
-        .delimiter(delimiter)
+        .delimiter(out_delimiter)
         .quote(quote)
         .from_writer(writer);
 

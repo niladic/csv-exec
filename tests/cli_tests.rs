@@ -104,6 +104,30 @@ Id\tDir\tResult
 }
 
 #[test]
+fn test_out_delimiter() {
+    let input = "
+Id\tDir
+24\texample.com/a
+68\texample.com/b
+"
+    .trim_start();
+
+    let expected_output = r#"
+Id;Dir;Result
+24;example.com/a;example.com/a/24
+68;example.com/b;example.com/b/68
+"#
+    .trim_start();
+
+    Command::cargo_bin("csv-exec")
+        .unwrap()
+        .args(&["echo $2/$1", "-d", "\\t", "--out-delimiter", ";"])
+        .write_stdin(input)
+        .assert()
+        .stdout(expected_output);
+}
+
+#[test]
 fn test_no_headers() {
     let input = r#"
 24,example.com/a
