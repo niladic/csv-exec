@@ -3,6 +3,8 @@ use clap::{App, Arg};
 use regex::{Captures, Regex};
 use std::{fs, io, process};
 
+include!(concat!(env!("OUT_DIR"), "/buildinfo.rs"));
+
 struct Config {
     pub input_path: Option<String>,
     pub output_path: Option<String>,
@@ -16,7 +18,7 @@ struct Config {
 
 fn main() -> Result<()> {
     let matches = App::new("csv-exec")
-        .version("0.1.0")
+        .version(BUILDINFO_VERSION)
         .author("niladic <git@nil.choron.cc>")
         .about("Execute a command on each record of a CSV.")
         .arg(
