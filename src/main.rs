@@ -37,8 +37,7 @@ fn main() -> Result<()> {
         )
         .arg(
             Arg::with_name("exec")
-                .short("e")
-                .long("exec")
+                .index(1)
                 .value_name("COMMAND")
                 .required(true)
                 .help("The command to execute")
